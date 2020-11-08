@@ -1,7 +1,6 @@
 package main
 
 import (
-	"errors"
 	"fmt"
 	"log"
 )
@@ -15,20 +14,13 @@ func NewParser(ts []Token) Parser {
 	return Parser{tokens: ts}
 }
 
-// func (p *Parser) PrintASTbetter() {
-// 	e, err := p.Parse()
-// 	if err != nil {
-// 		log.Fatal("parse failed: ", err)
-// 	}
-// }
-
 func (p *Parser) PrintAST() {
 	e, err := p.Parse()
 	if err != nil {
 		log.Fatal("parse failed: ", err)
 	}
 
-	fmt.Println(e.print(0))
+	fmt.Println(e.print())
 }
 
 func (p *Parser) Parse() (Expr, error) {
@@ -110,7 +102,7 @@ func (p *Parser) primary() (Expr, error) {
 		return Grouping{expr}, nil
 	}
 
-	return nil, errors.New(fmt.Sprintf("%v, Expect expression", p.peek().lexeme))
+	return nil, fmt.Errorf("%v, Expect expression", p.peek().lexeme)
 }
 
 /*
@@ -122,7 +114,7 @@ func (p *Parser) consume(t TokenType, msg string) (Token, error) {
 		return p.advance(), nil
 	}
 
-	return Token{}, errors.New(fmt.Sprintf("error: %s, %s", p.peek().lexeme, msg))
+	return Token{}, fmt.Errorf("error: %s, %s", p.peek().lexeme, msg)
 }
 
 func (p *Parser) peek() Token {

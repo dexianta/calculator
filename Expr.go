@@ -54,7 +54,7 @@ func (t Unary) accept(v Visitor) (object, error) {
 }
 
 func (t Unary) print() string {
-	return fmt.Sprintf("(%s %s)", t.operator.lexeme)
+	return fmt.Sprintf("(%s %s)", t.operator.lexeme, t.right.print())
 }
 
 type Literal struct {
